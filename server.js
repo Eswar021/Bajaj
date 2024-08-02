@@ -5,7 +5,18 @@ const WebSocket = require('ws');
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
+
+const allowedOrigins = ['https://bajaj-frontend-1t2d-noxfsgxbd-prasad217s-projects.vercel.app'];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+}));
 
 const fullName = 'CHOKAMELA KALI PRASADA MANI M';
 const dob = '21072003';
