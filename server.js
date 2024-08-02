@@ -8,11 +8,10 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const fullName = 'CHOKAMELA KALI PRASADA MANI M';
-const dob = '21072003'; // Replace with your actual date of birth in ddmmyyyy format
-const email = 'prasadmekala127@gmail.com'; // Replace with your actual college email
-const rollNumber = 'RA2111003010751'; // Replace with your actual college roll number
+const dob = '21072003';
+const email = 'prasadmekala127@gmail.com';
+const rollNumber = 'RA2111003010751';
 
-// Helper function to separate numbers and alphabets
 function separateData(data) {
     const numbers = [];
     const alphabets = [];
@@ -26,7 +25,6 @@ function separateData(data) {
     return { numbers, alphabets };
 }
 
-// POST /bfhl route
 app.post('/bfhl', (req, res) => {
     const { data } = req.body;
     if (!data) {
@@ -38,7 +36,7 @@ app.post('/bfhl', (req, res) => {
 
     const response = {
         is_success: true,
-        user_id: `${fullName}_${dob}`,
+        user_id: `${fullName.replace(/\s+/g, '_')}_${dob}`,
         email,
         roll_number: rollNumber,
         numbers,
@@ -49,7 +47,6 @@ app.post('/bfhl', (req, res) => {
     res.json(response);
 });
 
-// GET /bfhl route
 app.get('/bfhl', (req, res) => {
     const response = {
         operation_code: 1
@@ -58,7 +55,6 @@ app.get('/bfhl', (req, res) => {
     res.status(200).json(response);
 });
 
-// WebSocket server setup
 const server = require('http').createServer(app);
 const wss = new WebSocket.Server({ server });
 
@@ -71,7 +67,6 @@ wss.on('connection', (ws) => {
     ws.send('Hello! Message From Server!!');
 });
 
-// Start the server
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
